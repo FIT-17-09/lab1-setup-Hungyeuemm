@@ -1,8 +1,7 @@
 # Tập đoàn Thông tin
 - Tên nhóm: Nhóm 7
 - Lớp: CNTT 17-09
-- Thanh viên:
-- Nguyễn Hữu Hưng
+- Thanh viên: Nguyễn Hữu Hưng, Nguyễn Văn Được, Đỗ Quốc Khánh
 - Nhóm dịch vụ phụ:
 - Dịch vụ xử lý luồng camera
 - Sản phẩm tổng thể của lớp:
