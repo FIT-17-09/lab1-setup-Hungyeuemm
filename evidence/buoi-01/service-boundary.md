@@ -1,14 +1,14 @@
 # Tập đoàn Thông tin
-Tên nhóm: Nhóm 7
-Lớp: CNTT 17-09
-Thanh viên:
-Nguyễn Hữu Hưng
-Nhóm dịch vụ phụ:
-Dịch vụ xử lý luồng camera
-Sản phẩm tổng thể của lớp:
-Hệ thống nhận tiếp và thông tin camera xử lý luồng
+- Tên nhóm: Nhóm 7
+- Lớp: CNTT 17-09
+- Thanh viên:
+- Nguyễn Hữu Hưng
+- Nhóm dịch vụ phụ:
+- Dịch vụ xử lý luồng camera
+- Sản phẩm tổng thể của lớp:
+- Hệ thống nhận tiếp và thông tin camera xử lý luồng
 ![alt text](image-1.png)
-[alt text](mermaid-diagram.png)
+
 # Service Communication & Dependency
 
 ## 1. Consumer và Provider
@@ -75,7 +75,7 @@ Ví dụ:
 | DELETE | /api/camera/disconnect | Ngắt kết nối camera |
 
 ---
-
+![alt text](mermaid-diagram.png)
 # 4. Dữ liệu trao đổi mẫu
 
 ## Request
@@ -84,4 +84,4 @@ Ví dụ:
 {
   "cameraId": "cam01"
 }
-!
+
