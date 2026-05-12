@@ -1,107 +1,87 @@
-# Service Boundary của nhóm
+# Tập đoàn Thông tin
+Tên nhóm: Nhóm 7
+Lớp: CNTT 17-09
+Thanh viên:
+Nguyễn Hữu Hưng
+Nhóm dịch vụ phụ:
+Dịch vụ xử lý luồng camera
+Sản phẩm tổng thể của lớp:
+Hệ thống nhận tiếp và thông tin camera xử lý luồng
+![alt text](image-1.png)
+[alt text](mermaid-diagram.png)
+# Service Communication & Dependency
 
-## 1. Thông tin nhóm
+## 1. Consumer và Provider
 
-- Tên nhóm: Nhóm 7
-- Lớp: CNTT 17-09
-- Thành viên:
-  - Nguyễn Hữu Hưng
-- Service nhóm phụ trách:
-  - Camera Stream Processing Service
-- Sản phẩm tổng thể của lớp:
-  - Hệ thống tiếp nhận và xử lý luồng camera thông minh
+### Provider
 
-## 2. Actor
+Service nhóm em đóng vai trò **Provider** vì cung cấp:
+- Luồng camera realtime
+- API truy cập stream
+- Trạng thái camera
+- Metadata camera
 
-Ai tương tác với hệ thống/service?
-
-- Người dùng giám sát camera
-- Quản trị viên hệ thống
-- Thiết bị camera IP
+Các service sử dụng dữ liệu từ nhóm em:
 - AI Detection Service
-
-## 3. System Boundary
-
-Nhóm em xây phần nào?
-
-Phần nhóm kiểm soát:
-
-- Tiếp nhận luồng camera RTSP/HTTP
-- Xử lý stream video
-- Chuyển tiếp dữ liệu camera
-- Quản lý trạng thái camera
-- API truy cập camera stream
-
-Phần nhóm chỉ tích hợp:
-
-- AI Detection Service
-- Database
 - Frontend Dashboard
-- Notification Service
+- Monitoring Service
 
-## 4. Service Boundary
+---
 
-Service của nhóm có trách nhiệm gì?
+### Consumer
 
-- Nhận luồng video từ camera
-- Kiểm tra trạng thái camera
-- Streaming video realtime
-- Quản lý kết nối camera
-- Cung cấp API cho frontend và AI service
+Service nhóm em đóng vai trò **Consumer** khi sử dụng:
+- Authentication Service để xác thực người dùng
+- Notification Service để gửi cảnh báo
+- Redis để cache trạng thái camera
+- PostgreSQL để lưu metadata
 
-Service KHÔNG làm gì?
+---
 
-- Không huấn luyện AI model
-- Không xử lý giao diện frontend
-- Không gửi thông báo trực tiếp
-- Không lưu trữ video dài hạn
+# 2. Giao tiếp giữa các service
 
-## 5. Input / Output
+## Giao tiếp REST API
 
-### Input
+| Service gọi | Service nhận | Mục đích |
+|---|---|---|
+| Frontend Dashboard | Camera Stream Service | Lấy luồng camera |
+| Frontend Dashboard | Authentication Service | Đăng nhập |
+| Camera Stream Service | Notification Service | Gửi cảnh báo |
+| AI Detection Service | Camera Stream Service | Lấy dữ liệu stream |
 
-- RTSP Camera Stream
-- HTTP Stream
-- Camera configuration
-- Request từ frontend
+---
 
-### Output
+## Giao tiếp Event-Driven
 
-- Live video stream
-- Camera status
-- Stream metadata
-- API response JSON
+RabbitMQ được sử dụng để:
+- Gửi event camera
+- Gửi kết quả AI detection
+- Đồng bộ trạng thái service
 
-## 6. API dự kiến
+Ví dụ:
+- Camera phát hiện chuyển động
+- AI service xử lý
+- Notification service gửi cảnh báo realtime
+
+---
+
+# 3. API dự kiến
 
 | Method | Endpoint | Mục đích |
 |---|---|---|
-| GET | /health | Kiểm tra service |
-| POST | /api/camera/connect | Kết nối camera |
 | GET | /api/camera/stream | Lấy luồng camera |
 | GET | /api/camera/status | Kiểm tra trạng thái camera |
+| POST | /api/camera/connect | Kết nối camera |
 | DELETE | /api/camera/disconnect | Ngắt kết nối camera |
 
-## 7. Phụ thuộc service khác
+---
 
-Service này gọi đến service nào?
+# 4. Dữ liệu trao đổi mẫu
 
-- PostgreSQL Database
-- Redis Cache
-- AI Detection Service
+## Request
 
-Service nào gọi đến service này?
-
-- Frontend Dashboard
-- Mobile App
-- Monitoring Service
-
-## 8. Sơ đồ minh họa
-
-```mermaid
-flowchart LR
-    Camera[IP Camera] --> StreamService[Camera Stream Service]
-    StreamService --> DB[(PostgreSQL)]
-    StreamService --> Redis[(Redis Cache)]
-    StreamService --> AI[AI Detection Service]
-    Frontend[Frontend Dashboard] --> StreamService
+```json
+{
+  "cameraId": "cam01"
+}
+!
